@@ -45,10 +45,24 @@ ncols <- 12                   ## 12 samples
 counts <- initDat[,2:13]
 meta <- initDat[,14:22]
 
-exp <- SummarizedExperiment(assays=list(counts=counts), metadata = meta)
+exp <- SummarizedExperiment(assays=list(norm_expr=counts), metadata = meta)
 rownames(exp) <- initDat[,1]
 
 availSigns <- availableSignatures()
+## ones that seem useful
+## ExpandedImmune_Ayers, Chemokines_Messina, ImmunoScore_Hao, ImmuneCyt_Rooney,
+## Tinflam_Ayers, ImmunoScore_Roh, ImmuneCyt_Davoli, IFN_Ayers
+
+sigList <- c("ImmunoScore_Hao", "ImmunoScore_Roh", 
+             "ImmuneCyt_Davoli", "ImmuneCyt_Rooney",
+             "ExpandedImmune_Ayers", 
+             "Chemokines_Messina", 
+             "Tinflam_Ayers", 
+             "IFN_Ayers")
+
+exp <- multipleSign(dataset = exp, 
+                     inputType = "rnaseq",
+                     signature = sigList)
 
 
 
