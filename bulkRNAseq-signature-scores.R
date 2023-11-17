@@ -46,7 +46,12 @@ counts <- initDat[,2:13]
 meta <- initDat[,14:22]
 
 exp <- SummarizedExperiment(assays=list(norm_expr=counts), metadata = meta)
-rownames(exp) <- initDat[,1]
+
+BiocManager::install("EnsDb.Mmusculus.v79", lib=envirodir, force=TRUE)
+library("EnsDb.Mmusculus.v79", lib=envirodir)
+mousegeneENSEMBL <- initDat[,1]
+geneIDs1 <- ensembldb::select(EnsDb.Mmusculus.v79, keys=mousegeneENSEMBL, keytype = "GENEID", columns = c("SYMBOL","GENEID"))
+rownames(exp) <- geneIDs1[1]
 
 availSigns <- availableSignatures()
 ## ones that seem useful
